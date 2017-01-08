@@ -1,8 +1,6 @@
-What you learnt outside the class?
-Be specific...
-
 Week1
 
-#1 I read the paper "X" and I learnt that software engineering is multi-disciplinary subject
-#2 I discussed with Krishna about design of software and we debated on different facets of software enigneering.
-Is it art, science or what?
+I read about Erlang-its merits and demerits-and how it's differnt from other languages.
+I learnt about some new features that a programming language can have like concurrency,fault-tolerant,zero-downtime and reliabilty.
+I read a paper by ROBERT('BOB') ELLIOT KAHN on the topic-"Assessing the Internet: Lessons Learned, Strategies for Evolution, and Future Possibilities"
+I got to know a lot of new terms like DNS,TCP/IP ,some new concepts like packet-switching and distributed-communication and a beautiful journey of making of internet.
