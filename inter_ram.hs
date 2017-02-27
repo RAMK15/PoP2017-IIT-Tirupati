@@ -122,6 +122,8 @@ term toks =
 factor:: [Token] -> (Tree, [Token])
 factor toks =
   case getToken toks of  ConstInt n       -> (NumNodeInt n, eatToken toks)
+                         Identifier s     -> (VarNode s, eatToken toks)
+                         ConstDouble n    -> (NumNodeDouble n, eatToken toks)
                          LPar             -> let (expTree, toks') = expr (eatToken toks)
                                              in
                                                 case (getToken toks') of RPar -> (expTree, eatToken toks')
@@ -130,15 +132,18 @@ factor toks =
 
 expr:: [Token] -> (Tree, [Token])
 expr toks =
-  let (termTree, toks') = term toks
-  in
-      case (whichOperator.getToken) toks' of "PLUS" -> let (expTree, toks'') = expr (eatToken toks')
-                                                       in (SumNode ((whichOperator.getToken) toks') termTree expTree, toks'')
-                                             "MINUS"-> let (expTree, toks'') = expr (eatToken toks')
-                                                       in (SumNode ((whichOperator.getToken) toks') termTree expTree, toks'')
-                                             "last" -> (termTree,toks')
-                                             "rpar" -> (termTree,toks')
-                                             _      -> term toks
+  case getToken toks of Identifier s -> case (getToken.eatToken) toks of Assign -> let (expTree, toks') = expr ((eatToken.eatToken) toks)
+                                                                                   in (AssignNode s expTree, toks')
+                                                                         _      -> error $ "Parse error on token" ++ (show (getToken toks))
+                        _            -> let (termTree, toks') = term toks
+                                        in
+                                             case (whichOperator.getToken) toks' of "PLUS" -> let (expTree, toks'') = expr (eatToken toks')
+                                                                                              in (SumNode ((whichOperator.getToken) toks') termTree expTree, toks'')
+                                                                                    "MINUS"-> let (expTree, toks'') = expr (eatToken toks')
+                                                                                              in (SumNode ((whichOperator.getToken) toks') termTree expTree, toks'')
+                                                                                    "last" -> (termTree,toks')
+                                                                                    "rpar" -> (termTree,toks')
+                                                                                    _      -> term toks
 
                         
 
