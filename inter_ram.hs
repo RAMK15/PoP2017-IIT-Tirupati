@@ -51,6 +51,7 @@ isOperator ch = any (\x -> x == ch) "+-*/%"
 --Function which takes a token as an input and return which operator the token is...
 whichOperator :: Token -> String
 whichOperator TokEnd = "last"
+whichOperator RPar   = "rpar"
 whichOperator (Operator s) = case s of "+" -> "PLUS"
                                        "-" -> "MINUS"
                                        "*" -> "MULT"
@@ -121,7 +122,11 @@ term toks =
 factor:: [Token] -> (Tree, [Token])
 factor toks =
   case getToken toks of  ConstInt n       -> (NumNodeInt n, eatToken toks)
-                         _                 -> error $ "Parse error on token" ++ (show (getToken toks))
+                         LPar             -> let (expTree, toks') = expr (eatToken toks)
+                                             in
+                                                case (getToken toks') of RPar -> (expTree, eatToken toks')
+                                                                         _    -> (error "Missing Right Parenthesis" ) 
+                         _                -> error $ "Parse error on token" ++ (show (getToken toks))
 
 expr:: [Token] -> (Tree, [Token])
 expr toks =
@@ -132,6 +137,7 @@ expr toks =
                                              "MINUS"-> let (expTree, toks'') = expr (eatToken toks')
                                                        in (SumNode ((whichOperator.getToken) toks') termTree expTree, toks'')
                                              "last" -> (termTree,toks')
+                                             "rpar" -> (termTree,toks')
                                              _      -> term toks
 
                         
@@ -139,7 +145,9 @@ expr toks =
 parse:: [Token] -> Tree
 parse toks = let (tree, toks') = expr toks
              in
-                if null toks' then tree else error $ "parsing error: leftover tokens" ++ (show toks')
+                if ((length toks')==1) then tree else error $ "parsing error: leftover tokens" ++ (show toks')
+
+--EVALUATION OF PARSE TREE#########################################################
 
 
-main = (print . parse . tokenise) "1+2*3"
+main = (print . parse . tokenise) "1+2*3-4"
