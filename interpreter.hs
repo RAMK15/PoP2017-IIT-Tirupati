@@ -145,7 +145,7 @@ factor toks =
   case getToken toks of  Identifier s     -> (VarNode s, eatToken toks)
                          ConstInt n       -> (NumNodeInt n, eatToken toks)
                          ConstDouble n    -> (NumNodeDouble n, eatToken toks)
-                         LPar             -> let (expTree, toks') = expr (eatToken toks)
+                         LPar             -> let (expTree, toks') = logicalExpr (eatToken toks)
                                              in
                                                 case (getToken toks') of RPar -> (expTree, eatToken toks')
                                                                          _    -> (error "Missing Right Parenthesis" )
