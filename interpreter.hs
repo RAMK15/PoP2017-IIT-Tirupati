@@ -206,6 +206,14 @@ loop symtab = do
     in do
       print val
       loop symTab'
-
+julia = main
 main = do
+  putStrLn "               _"
+  putStrLn "   _       _ _(_)_     |"
+  putStrLn "  (_)     | (_) (_)    |"
+  putStrLn "   _ _   _| |_  __ _   |"
+  putStrLn "  | | | | | | |/ _` |  |"
+  putStrLn "  | | |_| | | | (_| |  |"
+  putStrLn " _/ |\\ _ _|_|_|\\__ _|  |"
+  putStrLn "|__/                   |"
   loop (DM.fromList [])
